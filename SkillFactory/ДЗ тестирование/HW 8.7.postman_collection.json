@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "daddf012-ab0a-4a92-bd35-f6b110c2f5c9",
+		"name": "HW 8.7",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24767385"
+	},
+	"item": [
+		{
+			"name": "Get API key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"auth_key\", JSON.parse(responseBody).key);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "email",
+						"value": "rorzamapsa@gufum.com",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "qwerty666",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/api/key",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"key"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var data = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.collectionVariables.set(\"pet_id\", data.id);\r",
+							"pm.collectionVariables.set(\"name\", data.name);\r",
+							"pm.collectionVariables.set(\"age\", data.age);\r",
+							"pm.collectionVariables.set(\"animal_type\", data.animal_type);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth_key",
+						"value": "{{auth_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Lady GAGA",
+							"type": "text"
+						},
+						{
+							"key": "animal_type",
+							"value": "Gagara",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "666",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/api/create_pet_simple",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"create_pet_simple"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change name pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var data = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.test(\"Name is changed\", function () {\r",
+							"    if (pm.expect(pm.collectionVariables.get('name')).to.not.equal(data.name)) {\r",
+							"        pm.collectionVariables.set(\"name\", data.name);\r",
+							"    } else {\r",
+							"        pm.collectionVariables.set('name', 'miss')\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth_key",
+						"value": "{{auth_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "May May",
+							"type": "text"
+						},
+						{
+							"key": "animal_type",
+							"value": "{{animal_type}}",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/api/pets/{{pet_id}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"pets",
+						"{{pet_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of pets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var data = JSON.parse(responseBody)\r",
+							"\r",
+							"pm.test(\"Name is changed\", function () {\r",
+							"    pm.expect(pm.collectionVariables.get('name')).to.eql(data.pets[0].name);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth_key",
+						"value": "{{auth_key}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/api/pets?filter=my_pets",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"pets"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "my_pets"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "https://petfriends.skillfactory.ru",
+			"type": "string"
+		},
+		{
+			"key": "auth_key",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pet_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "age",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "animal_type",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
