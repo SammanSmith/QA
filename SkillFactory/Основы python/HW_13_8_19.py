@@ -10,6 +10,6 @@ for i in range(ticket):
         total += 1390
 
 if ticket > 3:
-    print(total - total * .1)
+    print(f'Сумма к оплате: {total - total * .1}')
 else:
-    print(total)
+    print(f'Сумма к оплате: {total}')
