@@ -26,9 +26,9 @@ CHAR = [IntVar(), IntVar(), IntVar(), IntVar()]
 for i in range(4):
     CHAR[i].set(1)
 
-window.iconbitmap(r'E:\_python\Профессионал\Проекты\Генератор паролей\icons\password.ico')
-copy_icon = PhotoImage(file=r'E:\_python\Профессионал\Проекты\Генератор паролей\img\copy.png')
-clear_icon = PhotoImage(file=r'E:\_python\Профессионал\Проекты\Генератор паролей\img\clean.png')
+window.iconbitmap(r'icons\password.ico')
+copy_icon = PhotoImage(file=r'img\copy.png')
+clear_icon = PhotoImage(file=r'img\clean.png')
 
 # ------------------------------------ LOGIC ------------------------------------------------
 def copy_pass():
